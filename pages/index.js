@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import styled from 'styled-components'
-
+import React,{useState} from 'react';
 import CoinGecko from 'coingecko-api';
 
 const coinG = new CoinGecko();
@@ -39,7 +39,6 @@ export default function Home(props) {
       return false;
     }
   }
-
   const formatPercent = number => 
   `${new Number(number).toFixed(2)}%`
 
@@ -54,6 +53,27 @@ export default function Home(props) {
 
   const numberwithCommas = number =>
     `${new Number(number).toLocaleString()}`
+  
+  const [currentSum,setCurrentSum]=useState(0);
+  const [clear,setClear]=useState(false);
+  
+  const Multiply=(e)=>{
+    e.preventDefault();
+    if(clear) setClear(false);
+    let currentNum=document.querySelectorAll('#num')[0].value
+    let currentPrice = document.querySelectorAll('#num')[1].value
+    if(currentNum=='')
+    return;
+    let sum= currentSum+parseFloat(currentNum)*parseFloat(currentPrice).toFixed(2);
+    setCurrentSum(sum);
+    document.querySelector('#num').value="";
+  }
+  const Clear=(e)=>{
+    e.preventDefault();
+    document.querySelector('form').reset();
+    setClear(true);
+    setCurrentSum(0);
+  }
 
   return (
     <div className={styles.container}>
@@ -62,7 +82,17 @@ export default function Home(props) {
       </Head>
 
       <h1 className = {styles.header}>Real-Time Cryptocurrency Prices</h1>
-      
+
+      <div className = {styles.header}>
+        <form>
+          <input type = "text" id = "num" placeholder = "enter amount" />
+          <input type = "text" id = "num" placeholder = "enter current price" />
+          <button onClick = {Multiply}>Add</button>
+          <button onClick = {Clear}>Clear</button>
+          <input type = "text" id = "result" value = {currentSum} readOnly />
+        </form>
+      </div>
+
       <table className = {styles.coins}>
         <thead className = {styles.thead}>
           <tr>

@@ -6,6 +6,9 @@
   font-size: 35px;
 }
 
+.input{
+  width:120%
+}
 .thead{
   font-family: 'Libre Baskerville', serif;
   padding-bottom: 50px;
